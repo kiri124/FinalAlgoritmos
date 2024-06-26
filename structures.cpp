@@ -39,38 +39,113 @@ Usuario::Usuario(const std::string &csvLine)
     siguiente = nullptr;
 }
 
-std::vector<std::string> Person::getHeaders() const
+std::vector<std::string> Receta::getHeaders() const
 {
-    return {"Name", "Age", "City"};
+    return {"NombrePaciente", "Medicamento", "Dosis", "NumeroDias", "CadaCuantasHoras"};
 }
 
 // Ejemplo de función para obtener una representación CSV de Person (opcional)
-std::string Person::toCsvString() const
+std::string Receta::toCsvString() const
 {
-    return name + "," + std::to_string(age) + "," + city;
+    return nombrePaciente + "," + medicamento + "," + dosis + "," + std::to_string(numeroDias) + "," + std::to_string(cadaCuantasHoras);
 }
-
-// Constructor para inicializar desde parámetros
-Person::Person(const std::string &name, int age, const std::string &city)
-    : name(name), age(age), city(city) {}
-
-Person::Person(const std::string &csvLine)
+Receta::Receta() {}
+Receta::Receta(const std::string &csvLine)
 {
     std::stringstream ss(csvLine);
     std::string item;
-
     if (std::getline(ss, item, ','))
-        name = item;
-    else
-        throw std::runtime_error("Failed to parse name");
-
+        nombrePaciente = item;
     if (std::getline(ss, item, ','))
-        age = std::stoi(item);
-    else
-        throw std::runtime_error("Failed to parse age");
-
+        medicamento = item;
     if (std::getline(ss, item, ','))
-        city = item;
-    else
-        throw std::runtime_error("Failed to parse city");
+        dosis = item;
+    if (std::getline(ss, item, ','))
+        numeroDias = std::stoi(item);
+    if (std::getline(ss, item, ','))
+        cadaCuantasHoras = std::stoi(item);
+}
+
+std::vector<std::string> HistorialMedico::getHeaders() const
+{
+    return {"NombrePaciente", "FechaConsulta", "MotivoConsulta", "Diagnostico", "Tratamiento"};
+}
+
+// Ejemplo de función para obtener una representación CSV de Person (opcional)
+std::string HistorialMedico::toCsvString() const
+{
+    return nombre + "," + fechaConsulta + "," + motivoConsulta + "," + diagnostico + "," + tratamiento;
+}
+
+HistorialMedico::HistorialMedico()
+{
+}
+HistorialMedico::HistorialMedico(const std::string &csvLine)
+{
+    std::stringstream ss(csvLine);
+    std::string item;
+    std::getline(ss, item, ','); // key is not used
+    if (std::getline(ss, item, ','))
+        id = stoi(item);
+    if (std::getline(ss, item, ','))
+        nombre = item;
+    if (std::getline(ss, item, ','))
+        fechaConsulta = item;
+    if (std::getline(ss, item, ','))
+        motivoConsulta = item;
+    if (std::getline(ss, item, ','))
+        diagnostico = item;
+    if (std::getline(ss, item, ','))
+        tratamiento = item;
+}
+
+std::vector<std::string> Paciente::getHeaders() const
+{
+    return {"Nombre", "Apellido", "FechaNacimiento", "Genero", "EstadoCivil", "Dni", "Direccion", "Celular", "Correo", "Peso", "Talla", "Temperatura", "Presion", "Saturacion", "EspecialidadAsignada", "MedicoAsignado", "NivelUrgencia"};
+}
+// Función para obtener una línea CSV
+std::string Paciente::toCsvString() const
+{
+    return nombre + "," + apellido + "," + fechaNacimiento + "," + genero + "," + estadoCivil + "," + dni + "," + direccion + "," + celular + "," + correo + "," + std::to_string(peso) + "," + std::to_string(talla) + "," + std::to_string(temperatura) + "," + std::to_string(presion) + "," + std::to_string(saturacion) + "," + std::to_string(especialidadAsignada) + "," + medicoAsignado + "," + std::to_string(nivelUrgencia);
+}
+
+Paciente::Paciente(){};
+Paciente::Paciente(const std::string &csvLine)
+{
+    std::stringstream ss(csvLine);
+    std::string item;
+    if (std::getline(ss, item, ','))
+        nombre = item;
+    if (std::getline(ss, item, ','))
+        apellido = item;
+    if (std::getline(ss, item, ','))
+        fechaNacimiento = item;
+    if (std::getline(ss, item, ','))
+        genero = *item.data();
+    if (std::getline(ss, item, ','))
+        estadoCivil = *item.data();
+    if (std::getline(ss, item, ','))
+        dni = item;
+    if (std::getline(ss, item, ','))
+        direccion = item;
+    if (std::getline(ss, item, ','))
+        celular = item;
+    if (std::getline(ss, item, ','))
+        correo = item;
+    if (std::getline(ss, item, ','))
+        peso = std::stoi(item);
+    if (std::getline(ss, item, ','))
+        talla = std::stoi(item);
+    if (std::getline(ss, item, ','))
+        temperatura = std::stoi(item);
+    if (std::getline(ss, item, ','))
+        presion = std::stoi(item);
+    if (std::getline(ss, item, ','))
+        saturacion = std::stoi(item);
+    if (std::getline(ss, item, ','))
+        especialidadAsignada = std::stoi(item);
+    if (std::getline(ss, item, ','))
+        medicoAsignado = item;
+    if (std::getline(ss, item, ','))
+        nivelUrgencia = std::stoi(item);
 }

@@ -8,11 +8,14 @@ template <typename T>
 database::Database<T>::Database() {}
 
 template <typename T>
+database::Database<T>::Database(std::string filename) : filename(filename) {}
+
+template <typename T>
 database::Database<T>::~Database() {}
 
 // Función genérica para escribir un vector de objetos T en un archivo CSV
 template <typename T>
-void database::Database<T>::writeCsv(const std::string &filename, std::vector<T> &data)
+void database::Database<T>::writeCsv(std::vector<T> &data)
 {
     std::ofstream file(filename);
     if (!file.is_open())
@@ -21,14 +24,14 @@ void database::Database<T>::writeCsv(const std::string &filename, std::vector<T>
         return;
     }
 
-    auto headers = data.front().getHeaders();
-    for (size_t i = 0; i < headers.size(); ++i)
-    {
-        file << headers[i];
-        if (i < headers.size() - 1)
-            file << ",";
-    }
-    file << "\n";
+    // auto headers = data.front().getHeaders();
+    // for (size_t i = 0; i < headers.size(); ++i)
+    // {
+    //     file << headers[i];
+    //     if (i < headers.size() - 1)
+    //         file << ",";
+    // }
+    // file << "\n";
 
     for (const auto &person : data)
     {
@@ -40,7 +43,7 @@ void database::Database<T>::writeCsv(const std::string &filename, std::vector<T>
 }
 
 template <typename T>
-void database::Database<T>::readCsv(const std::string &filename, std::vector<T> &data)
+void database::Database<T>::readCsv(std::vector<T> &data)
 {
     std::ifstream file(filename);
     if (!file.is_open())
@@ -71,5 +74,7 @@ void database::Database<T>::readCsv(const std::string &filename, std::vector<T> 
     file.close();
 }
 
-template class database::Database<Person>;
 template class database::Database<Usuario>;
+template class database::Database<HistorialMedico>;
+template class database::Database<Receta>;
+template class database::Database<Paciente>;

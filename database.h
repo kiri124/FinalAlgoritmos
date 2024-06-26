@@ -13,10 +13,12 @@ namespace database
     class Database
     {
     public:
+        std::string filename;
+        Database(std::string filename);
         Database();
         ~Database();
-        void writeCsv(const std::string &filename, std::vector<T> &data);
-        void readCsv(const std::string &filename, std::vector<T> &data);
+        void writeCsv(std::vector<T> &data);
+        void readCsv(std::vector<T> &data);
     };
 
 }

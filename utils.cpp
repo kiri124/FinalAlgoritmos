@@ -1,10 +1,14 @@
 #include <iostream>
+#include <fstream>
+#include <filesystem>
+#include <queue>
+#include "structures.h"
 #include "utils.h"
 
 using namespace std;
 
 // Funcion recursiva para validar que una cadena contiene solo letras y espacios
-bool esSoloLetrasYEspacios(const string &str, int index)
+bool utils::esSoloLetrasYEspacios(const string &str, int index)
 {
   if (index == str.length())
     return true;
@@ -14,7 +18,7 @@ bool esSoloLetrasYEspacios(const string &str, int index)
 }
 
 // Funcion recursiva para validar que una cadena contiene solo letras, numeros y espacios
-bool esSoloLetrasNumerosYEspacios(const string &str, int index)
+bool utils::esSoloLetrasNumerosYEspacios(const string &str, int index)
 {
   if (index == str.length())
     return true;
@@ -24,7 +28,7 @@ bool esSoloLetrasNumerosYEspacios(const string &str, int index)
 }
 
 // Funcion recursiva para validar si un numero de DNI es valido
-bool esDniValido(const string &dni, int index)
+bool utils::esDniValido(const string &dni, int index)
 {
   // Se asume que un DNI valido tiene 8 digitos
   if (dni.length() != 8)
@@ -37,7 +41,7 @@ bool esDniValido(const string &dni, int index)
 }
 
 // Funcion recursiva para validar si un numero de telefono es valido
-bool esCelularValido(const string &celular, int index)
+bool utils::esCelularValido(const string &celular, int index)
 {
   // Se asume que un numero de telefono valido tiene 9 digitos
   if (celular.length() != 9)
@@ -50,7 +54,7 @@ bool esCelularValido(const string &celular, int index)
 }
 
 // Funcion recursiva para validar si el nombre ingresado contiene caracteres alfabeticos solamente
-bool esNombreValido(const string &nombre, int index)
+bool utils::esNombreValido(const string &nombre, int index)
 {
   if (index == nombre.length())
     return true;
@@ -60,13 +64,36 @@ bool esNombreValido(const string &nombre, int index)
 }
 
 // Funcion para validar si el genero ingresado es valido (M o F)
-bool esGeneroValido(char genero)
+bool utils::esGeneroValido(char genero)
 {
   return genero == 'M' || genero == 'm' || genero == 'F' || genero == 'f';
 }
 
 // Funcion para validar si el estado civil ingresado es valido (S, C, V o D)
-bool esEstadoCivilValido(char estadoCivil)
+bool utils::esEstadoCivilValido(char estadoCivil)
 {
   return estadoCivil == 'S' || estadoCivil == 's' || estadoCivil == 'C' || estadoCivil == 'c' || estadoCivil == 'V' || estadoCivil == 'v' || estadoCivil == 'D' || estadoCivil == 'd';
+}
+
+void utils::checkAndCreateFile(const std::string &filename)
+{
+  // Verificar si el archivo existe
+  if (!std::filesystem::exists(filename))
+  {
+    std::cout << "El archivo no existe. Creando el archivo..." << std::endl;
+
+    // Crear el archivo
+    std::ofstream outFile(filename);
+    if (!outFile)
+    {
+      std::cerr << "Error al crear el archivo." << std::endl;
+      return;
+    }
+    outFile.close();
+    std::cout << "Archivo creado exitosamente." << std::endl;
+  }
+  else
+  {
+    std::cout << "El archivo ya existe." << std::endl;
+  }
 }
