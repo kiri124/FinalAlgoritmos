@@ -19,7 +19,7 @@ namespace btree
         BTreeNode(bool isLeaf);
         ~BTreeNode();
 
-        void insertNonFull(const std::string &key, const T &value, int t, int currentId);
+        void insertNonFull(const std::string &key, const T &value_, int t, int currentId);
         void splitChild(int i, BTreeNode *y, int t);
         std::vector<std::tuple<int, T>> search(const std::string &key);
         void traverse();

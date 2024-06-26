@@ -63,6 +63,7 @@ void mostrarHistorialMedico(const vector<HistorialMedico> &historial)
 void actualizarRegistroHistorial(HistorialMedico nuevoRegistro, const string &nombrePaciente, int indice)
 {
     historialTree.remove(nombrePaciente, indice);
+    historialTree.insert(nombrePaciente, nuevoRegistro, indice);
     historialTree.writeToCSV();
     historialTree.readFromCSV();
 }
@@ -147,10 +148,6 @@ void manejarActualizacionHistorialMedico()
         }
 
         actualizarRegistroHistorial(nuevoRegistro, nombrePaciente, id);
-
-        historialTree.insert(nombrePaciente, nuevoRegistro, 0);
-        historialTree.writeToCSV();
-        historialTree.readFromCSV();
     }
     else
     {

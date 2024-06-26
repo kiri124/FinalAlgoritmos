@@ -23,14 +23,17 @@ BTreeNode<T>::~BTreeNode()
 }
 
 template <typename T>
-void BTreeNode<T>::insertNonFull(const std::string &key, const T &value, int t, int currentId)
+void BTreeNode<T>::insertNonFull(const std::string &key, const T &value_, int t, int currentId)
 {
+    T value = value_;
     int i = keys.size() - 1;
     int nextID = nextId++;
     if (currentId > 0)
     {
         nextID = currentId;
+        nextId = currentId + 1;
     }
+    value.id = nextID;
 
     if (isLeaf)
     {
@@ -41,7 +44,20 @@ void BTreeNode<T>::insertNonFull(const std::string &key, const T &value, int t, 
 
         if (i >= 0 && keys[i].first == key)
         {
-            keys[i].second.push_back({nextID, value}); // Incrementar y usar el siguiente ID
+            // Verificar si el ID ya existe
+            bool idExists = false;
+            for (const auto &[id, existingValue] : keys[i].second)
+            {
+                if (id == nextID)
+                {
+                    idExists = true;
+                    break;
+                }
+            }
+            if (!idExists)
+            {
+                keys[i].second.push_back({nextID, value});
+            }
         }
         else
         {
@@ -57,7 +73,20 @@ void BTreeNode<T>::insertNonFull(const std::string &key, const T &value, int t, 
 
         if (i >= 0 && keys[i].first == key)
         {
-            keys[i].second.push_back({nextID, value}); // Incrementar y usar el siguiente ID
+            // Verificar si el ID ya existe
+            bool idExists = false;
+            for (const auto &[id, existingValue] : keys[i].second)
+            {
+                if (id == nextID)
+                {
+                    idExists = true;
+                    break;
+                }
+            }
+            if (!idExists)
+            {
+                keys[i].second.push_back({nextID, value});
+            }
             return;
         }
 
