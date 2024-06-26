@@ -1,7 +1,7 @@
 .vscode
 main.exe
 test.cpp
-db
+db/*.txt
 # Prerequisites
 *.d
 
