@@ -146,6 +146,7 @@ struct Hospital
 struct Paciente : public DataStructure
 {
   // Datos Personales
+  int id;
   std::string nombre;
   std::string apellido;
   std::string fechaNacimiento;
@@ -170,7 +171,27 @@ struct Paciente : public DataStructure
 
   // Implementación de métodos virtuales puros de DataStructure
   std::vector<std::string> getHeaders() const override;
-
+  friend std::ostream &operator<<(std::ostream &os, const Paciente &paciente)
+  {
+    os << paciente.nombre + "," + 
+    paciente.apellido + "," + 
+    paciente.fechaNacimiento + "," + 
+    paciente.genero + "," + 
+    paciente.estadoCivil + "," + 
+    paciente.dni + "," + 
+    paciente.direccion + "," + 
+    paciente.celular + "," + 
+    paciente.correo + "," + 
+    std::to_string(paciente.peso > 0 ? paciente.peso : 0) + "," + 
+    std::to_string(paciente.talla > 0 ? paciente.talla : 0) + "," + 
+    std::to_string(paciente.temperatura > 0 ? paciente.temperatura : 0) + "," + 
+    std::to_string(paciente.presion > 0 ? paciente.presion : 0) + "," + 
+    std::to_string(paciente.saturacion > 0 ? paciente.saturacion : 0) + "," + 
+    std::to_string(paciente.especialidadAsignada > 0 ? paciente.especialidadAsignada : 0) + "," + 
+    paciente.medicoAsignado + "," + 
+    std::to_string(paciente.nivelUrgencia > 0 ? paciente.nivelUrgencia: 0);
+    return os;
+  }
   std::string toCsvString() const override;
   Paciente();
   Paciente(const std::string &csvLine);

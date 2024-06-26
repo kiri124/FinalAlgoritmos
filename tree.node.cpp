@@ -364,3 +364,4 @@ bool BTree<T>::remove(const std::string &key, int id)
 }
 
 template class BTree<HistorialMedico>;
+template class BTree<Paciente>;

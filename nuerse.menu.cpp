@@ -13,8 +13,7 @@
 using namespace std;
 using namespace utils;
 
-database::Database<Paciente> pacienteDatabase("db/pacientes.txt");
-
+btree::BTree<Paciente> pacienteTree(3, "db/paciente.txt");
 // Funcion para registrar datos del paciente con validaciones
 void registrarDatosPaciente(Paciente &paciente)
 {
@@ -92,14 +91,41 @@ void registrarDatosPaciente(Paciente &paciente)
 
     cout << "Correo electronico: ";
     cin >> paciente.correo;
+
+    pacienteTree.insert(paciente.nombre, paciente, 0);
+    pacienteTree.writeToCSV();
+    pacienteTree.readFromCSV();
 }
 
 // Funcion para actualizar los datos de un paciente
 void actualizarDatosPaciente(Paciente &paciente)
 {
     int opcion;
+    std::string nombrePaciente = "";
+    bool nombreValido = false;
     do
     {
+        cout << "Ingrese el nombre del paciente: ";
+        getline(cin, nombrePaciente);
+        if (!esNombreValido(nombrePaciente))
+        {
+            cout << "El nombre debe contener solo letras." << endl;
+        }
+        else
+        {
+            nombreValido = true;
+            paciente.nombre = nombrePaciente; // Guardar el nombre del paciente
+        }
+    } while (!nombreValido);
+
+    do
+    {
+        std::vector<Paciente> pacientes = pacienteTree.searchVector(nombrePaciente);
+        if (pacientes.size() > 0)
+        {
+            paciente = pacientes[0];
+        }
+
         cout << "Seleccione el dato que desea actualizar:" << endl;
         cout << "1. Nombre" << endl;
         cout << "2. Apellido" << endl;
@@ -208,6 +234,14 @@ void actualizarDatosPaciente(Paciente &paciente)
             cout << "Opcion no valida" << endl;
             break;
         }
+
+        if (opcion < 10)
+        {
+            pacienteTree.remove(paciente.nombre, paciente.id);
+            pacienteTree.insert(paciente.nombre, paciente, paciente.id);
+            pacienteTree.writeToCSV();
+            pacienteTree.readFromCSV();
+        }
     } while (opcion != 10);
 }
 
@@ -233,6 +267,13 @@ void registrarTriaje(Paciente &paciente)
             paciente.nombre = nombrePaciente; // Guardar el nombre del paciente
         }
     } while (!nombreValido);
+
+    std::vector<Paciente> pacientes = pacienteTree.searchVector(nombrePaciente);
+    if (pacientes.size() > 0)
+    {
+        paciente = pacientes[0];
+        cout << "Paciente ya registrado. Se actualizara el historial medico" << endl;
+    }
 
     cout << "Peso (kg): ";
     while (!(cin >> paciente.peso))
@@ -273,6 +314,11 @@ void registrarTriaje(Paciente &paciente)
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cout << "Entrada no valida. Por favor, ingrese un numero para la saturacion de oxigeno: ";
     }
+
+    pacienteTree.remove(paciente.nombre, paciente.id);
+    pacienteTree.insert(paciente.nombre, paciente, paciente.id);
+    pacienteTree.writeToCSV();
+    pacienteTree.readFromCSV();
 }
 
 // Funcion para mostrar el triaje de un paciente
@@ -446,8 +492,7 @@ void eliminarPacienteDeLista(vector<Paciente> &listaEspera)
 // Funcion para mostrar el menu de la enfermera
 void manejarMenuEnfermera(vector<Paciente> &listaEspera)
 {
-    // btree::BTree<Paciente> pacienteTree(3, "db/listaEspera.txt");
-    // pacienteTree.readFromCSV();
+    pacienteTree.readFromCSV();
     Paciente paciente;
     int opcion;
     do

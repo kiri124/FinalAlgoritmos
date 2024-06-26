@@ -114,6 +114,9 @@ Paciente::Paciente(const std::string &csvLine)
 {
     std::stringstream ss(csvLine);
     std::string item;
+    std::getline(ss, item, ','); // key is not used
+    if (std::getline(ss, item, ','))
+        id = std::stoi(item);
     if (std::getline(ss, item, ','))
         nombre = item;
     if (std::getline(ss, item, ','))
